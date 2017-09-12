@@ -4,7 +4,7 @@ import Axios from 'axios'
 
 Vue.use(Vuex)
 const $http = Axios.create({
-  baseURL: 'http://localhost:3000'
+  baseURL: 'https://hacktiv-overflow-rhd.appspot.com/'
 })
 
 const store = new Vuex.Store({

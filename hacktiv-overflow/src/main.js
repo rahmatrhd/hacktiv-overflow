@@ -11,7 +11,7 @@ import('../node_modules/vuetify/dist/vuetify.min.css')
 Vue.use(Vuetify)
 Vue.config.productionTip = false
 Vue.prototype.$http = Axios.create({
-  baseURL: 'http://localhost:3000'
+  baseURL: 'https://hacktiv-overflow-rhd.appspot.com/'
 })
 
 /* eslint-disable no-new */
