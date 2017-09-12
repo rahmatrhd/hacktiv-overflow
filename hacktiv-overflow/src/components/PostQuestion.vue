@@ -68,6 +68,7 @@ export default {
         this.postTitle = null
         this.postBody = null
         this.showPostQuestion = false
+        data.user = this.$store.state.user
         this.$emit('newQuestion', data)
       })
       .catch(err => console.log(err))
