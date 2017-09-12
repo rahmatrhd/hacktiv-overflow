@@ -26,7 +26,7 @@ export default {
     },
     statusChangeCallback (response) {
       if (response.status === 'connected') {
-        this.$http.post('http://localhost:3000/user/login', {}, {
+        this.$http.post('/user/login', {}, {
           headers: {
             fbaccesstoken: response.authResponse.accessToken,
             fbid: response.authResponse.userID

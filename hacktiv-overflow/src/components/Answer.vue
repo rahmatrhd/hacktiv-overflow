@@ -65,8 +65,6 @@ export default {
       return this.upVotes.includes(this.$store.state.user._id)
     },
     downVoted () {
-      console.log('downvoted', this.$store.state.user._id)
-      console.log('asdasd', this.downVotes.includes(this.$store.state.user._id))
       return this.downVotes.includes(this.$store.state.user._id)
     }
   },
@@ -88,15 +86,12 @@ export default {
     },
 
     vote (val) {
-      console.log('send token', typeof this.$store.state.token, this.$store.state.token)
-
       this.$http.patch(`/answer/${this.answer._id}/${val}vote`, {}, {
         headers: {
           token: this.$store.state.token
         }
       })
       .then(({data}) => {
-        console.log(data)
         let userId = this.$store.state.user._id
         if (this[`${val}Voted`]) {
           // if already voted, remove data in answer.upVotes
