@@ -17,9 +17,10 @@ export default new Router({
       name: 'Home',
       component: HomeQuestions
     }, {
-      path: 'question/:questionTitle',
+      path: 'question/:id',
       name: 'SingleQuestion',
-      component: SingleQuestion
+      component: SingleQuestion,
+      props: true
     }]
   }, {
     path: '/login',

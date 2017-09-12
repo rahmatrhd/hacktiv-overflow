@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const jwt = require('jsonwebtoken')
-const controller = require('../controllers/userController')
+const controller = require('../controllers/answerController')
 
 const userVerify = (req, res, next) => {
   if (req.headers.token != null) {
@@ -11,7 +11,10 @@ const userVerify = (req, res, next) => {
   }
 }
 
-router.post('/login', controller.login)
-router.get('/me', userVerify, controller.me)
+router.post('/q/:id', userVerify, controller.create)
+router.delete('/:id', userVerify, controller.delete)
+
+router.patch('/:id/upvote', userVerify, controller.upvoteAnswer)
+router.patch('/:id/downvote', userVerify, controller.downvoteAnswer)
 
 module.exports = router

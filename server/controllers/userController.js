@@ -16,7 +16,6 @@ module.exports = {
       facebookId: req.headers.fbid
     })
     .then(user => {
-      console.log(user)
       if (user == null) {
         FB.setAccessToken(req.headers.fbaccesstoken)
         FB.api('/me', response => {
@@ -38,6 +37,14 @@ module.exports = {
           name: user.name
         }, process.env.APP_SECRET_KEY))
     })
+    .catch(err => res.send(err))
+  },
+
+  me: (req, res) => {
+    User.findOne({
+      _id: req.headers.userVerified._id
+    }, '_id name')
+    .then(user => res.send(user))
     .catch(err => res.send(err))
   }
 }

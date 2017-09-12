@@ -9,11 +9,15 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 export default {
   methods: {
     ...mapActions([
-      'checkLoginState'
+      'checkLoginState',
+      'getUser'
+    ]),
+    ...mapMutations([
+      'updateToken'
     ]),
     login () {
       window.FB.login(response => {
@@ -31,6 +35,8 @@ export default {
         .then(({data}) => {
           localStorage.setItem('token', data)
           this.checkLoginState()
+          this.updateToken()
+          this.getUser()
           this.$router.push({name: 'Home'})
         })
         .catch(err => console.log(err))

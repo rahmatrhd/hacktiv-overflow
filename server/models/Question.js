@@ -30,7 +30,7 @@ const schema = new Schema({
   }],
   views: [{
     type: Schema.Types.ObjectId,
-    ref: 'Answer'
+    ref: 'User'
   }]
 })
 

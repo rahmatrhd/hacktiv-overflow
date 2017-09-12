@@ -13,10 +13,12 @@ app.use(bodyParser.urlencoded({extended: false}))
 const index = require('./routes/index')
 const user = require('./routes/user')
 const question = require('./routes/question')
+const answer = require('./routes/answer')
 
 app.use('/', index)
 app.use('/user', user)
 app.use('/question', question)
+app.use('/answer', answer)
 
 app.listen(process.env.PORT || 3000, () => {
   console.log('adsasdad')

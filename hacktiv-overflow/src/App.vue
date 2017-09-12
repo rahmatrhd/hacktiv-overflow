@@ -9,7 +9,7 @@
         overflow
       >
         <v-list dense>
-          <v-list-tile @click="">
+          <v-list-tile :to="{name: 'Home'}">
             <v-list-tile-action>
               <v-icon>home</v-icon>
             </v-list-tile-action>
@@ -17,15 +17,15 @@
               <v-list-tile-title>Home</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
-          <v-list-tile @click="">
+          <v-list-tile :to="{name: 'Home'}" v-if="!isLoggedIn">
             <v-list-tile-action>
-              <v-icon>chat</v-icon>
+              <v-icon>power_settings_new</v-icon>
             </v-list-tile-action>
             <v-list-tile-content>
-              <v-list-tile-title>My Questions</v-list-tile-title>
+              <v-list-tile-title>Login</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
-          <v-list-tile @click="">
+          <v-list-tile @click="logout" v-if="isLoggedIn">
             <v-list-tile-action>
               <v-icon>power_settings_new</v-icon>
             </v-list-tile-action>
@@ -43,12 +43,18 @@
         <v-spacer></v-spacer>
         <v-toolbar-items class="hidden-sm-and-down">
           <v-btn
-            v-for="(nav, index) in navs"
-            :key="index"
-            :to="{name: nav.to}"
-            v-if="!(nav.label == 'Login' && isLoggedIn)"
+            :to="{name: 'Home'}"
             flat
-          >{{ nav.label }}</v-btn>
+          >
+            Home
+          </v-btn>
+          <v-btn
+            :to="{name: 'Login'}"
+            v-if="!isLoggedIn"
+            flat
+          >
+            Login
+          </v-btn>
           <v-btn
             @click="logout"
             v-if="isLoggedIn"
@@ -66,7 +72,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations, mapState } from 'vuex'
 export default {
   name: 'app',
   data () {
@@ -82,21 +88,29 @@ export default {
       }]
     }
   },
-  methods: {
-    ...mapActions([
-      'checkLoginState'
-    ]),
-    logout () {
-      this.$store.commit('updateLoginState', {status: 'logout'})
-      localStorage.removeItem('token')
-    }
-  },
   computed: {
     useDrawer () {
       return !this.$vuetify.breakpoint.mdAndUp
     },
-    isLoggedIn () {
-      return this.$store.state.isLoggedIn
+    ...mapState([
+      'isLoggedIn'
+    ])
+  },
+  methods: {
+    ...mapActions([
+      'checkLoginState',
+      'getQuestions',
+      'getUser'
+    ]),
+    ...mapMutations([
+      'updateToken',
+      'deleteUser'
+    ]),
+    logout () {
+      this.$store.commit('updateLoginState', {status: 'logout'})
+      localStorage.removeItem('token')
+      this.updateToken()
+      this.deleteUser()
     }
   },
   created () {
@@ -120,6 +134,12 @@ export default {
         xfbml: true,
         version: 'v2.8'
       })
+    }
+
+    this.getQuestions()
+    this.updateToken()
+    if (this.$store.state.isLoggedIn) {
+      this.getUser()
     }
   }
 }

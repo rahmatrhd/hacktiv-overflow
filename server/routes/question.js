@@ -3,25 +3,24 @@ const jwt = require('jsonwebtoken')
 const controller = require('../controllers/questionController')
 
 const userVerify = (req, res, next) => {
-  req.headers.userVerified = jwt.verify(req.headers.accesstoken, process.env.APP_SECRET_KEY)
-  next()
+  if (req.headers.token != null) {
+    req.headers.userVerified = jwt.verify(req.headers.token, process.env.APP_SECRET_KEY)
+    next()
+  } else {
+    res.send('not logged in')
+  }
 }
 
 router.get('/', controller.getAll)
-router.get('/mine', controller.getByUser)
+router.get('/mine', userVerify, controller.getByUser)
 router.get('/:id', controller.getById)
 router.post('/', userVerify, controller.create)
 router.put('/:id', userVerify, controller.update)
 router.delete('/:id', userVerify, controller.delete)
-//voutes question
-router.post('/:id/vote', userVerify, controller.voteQuestion)
-
-//answers
-router.post('/:id/answer', userVerify, controller.createAnswer)
-router.patch('/:id/answer/:answerId', userVerify, controller.updateAnswer)
-router.delete('/:id/answer/:answerId', userVerify, controller.deleteAnswer)
-
-//voutes answer
-router.post('/:id/answer/:answerId/vote', userVerify, controller.voteAnswer)
+// view increment
+router.patch('/:id/view', userVerify, controller.view)
+// votes
+router.patch('/:id/upvote', userVerify, controller.upvoteQuestion)
+router.patch('/:id/downvote', userVerify, controller.downvoteQuestion)
 
 module.exports = router
